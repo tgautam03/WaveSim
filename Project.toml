@@ -1,0 +1,7 @@
+name = "WaveSim"
+uuid = "3865ee68-2dfd-4b2e-93d1-a0ffc43cd0c0"
+authors = ["tgautam03 <tushariitr3@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
