@@ -12,7 +12,7 @@ $$\frac{\partial^2 u(x,t)}{\partial t^2} = c^2 \bigg[\frac{\partial^2 u(x,t)}{\p
 
 The variable $u(x,t)$ describes the displacement of string (in the vertical direction) at position $x$ and time $t$. 
 
-![Figure 1: Wave on a string. @fig:1](img/index/1d_wave.png)
+![Figure 1: Wave on a string. @fig:1](../img/index/1d_wave.png)
 
 The constant $c$ defines the speed of wave propagation. In this case, it is dependent on the material property. The higher the value of $c$, the faster will the wave propagate.
 
