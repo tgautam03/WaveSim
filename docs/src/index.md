@@ -19,8 +19,6 @@ The variable $u(x,t)$ describes the displacement of string (in the vertical dire
 </div>
 ```
 
-<!-- ![Figure 1: Wave on a string. @fig:1](https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/index/1d_wave.png) -->
-
 The constant $c$ defines the speed of wave propagation. In this case, it is dependent on the material property. The higher the value of $c$, the faster will the wave propagate.
 
 ```@raw html
@@ -36,10 +34,6 @@ The constant $c$ defines the speed of wave propagation. In this case, it is depe
   <div class="thecap">Figure 3: Wave on a string with speed 668 m/s. </div>
 </div>
 ```
-
-<!-- ![Figure 2: Wave on a string with speed 334 m/s. @fig:2](https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/index/1D_c1.gif)
-
-![Figure 3: Wave on a string with speed 668 m/s. @fig:3](https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/index/1D_c2.gif) -->
 
 Using this as an example, I will explain
 - Finite Difference Method for solving PDEs
