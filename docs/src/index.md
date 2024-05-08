@@ -10,13 +10,15 @@ I will start with the simplest case, i.e. 1D Wave Equation which can be seen as 
 
 $$\frac{\partial^2 u(x,t)}{\partial t^2} = c^2 \bigg[\frac{\partial^2 u(x,t)}{\partial x^2} \bigg] + s(x,t)$$
 
-$u(x,t)$ describes the displacement of string (in the vertical direction) at position $x$ and time $t$. 
+The variable $u(x,t)$ describes the displacement of string (in the vertical direction) at position $x$ and time $t$. 
 
-<div class="imgcap">
-  <img src="https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/index/1d_wave.png" alt="this slowpoke moves"  width="800"/>
-  <div class="thecap">Figure 1: Wave on a string. </div>
-</div>
+![Figure 1: Wave on a string. @fig:1](img/index/1d_wave.png)
 
+The constant $c$ defines the speed of wave propagation. In this case, it is dependent on the material property. The higher the value of $c$, the faster will the wave propagate.
+
+![Figure 2: Wave on a string with speed of 334 m/s. @fig:2](img/index/1d_c1.gif)
+
+![Figure 3: Wave on a string with speed of 668 m/s. @fig:3](img/index/1d_c2.gif)
 
 
 Using this as an example, I will explain
