@@ -55,10 +55,5 @@ function wave_sim_1d(x_details::Dict{String, Int64}, t_details::Dict{String, Int
         p_sols[it,:] = p
     end
 
-    # Animation
-    anim = @animate for it in range(start=1, stop=nt, length=min(nt, 60*(t_max-t_min)*10))
-        plot(x, p_sols[Int(floor(it)),:], ylims=(minimum(p_sols), maximum(p_sols)))
-    end
-
-    return anim
+    return p_sols
 end

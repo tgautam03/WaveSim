@@ -5,11 +5,19 @@ This is my attempt at simulating these waves (accurately) which can be modeled u
 
 $$\frac{\partial^2 p(x,y,z,t)}{\partial t^2} = c^2(x,y,z) \bigg[\frac{\partial^2 p(x,y,z,t)}{\partial x^2} + \frac{\partial^2 p(x,y,z,t)}{\partial y^2} + \frac{\partial^2 p(x,y,z,t)}{\partial z^2} \bigg] + s(x,y,z,t)$$
 
-## Overview
-### 1D Wave Equation
+## 1D Wave Equation
 I will start with the simplest case, i.e. 1D Wave Equation which can be seen as a model for wave on a string (homogenous material)
 
-$$\frac{\partial^2 p(x,t)}{\partial t^2} = c^2 \bigg[\frac{\partial^2 p(x,t)}{\partial x^2} \bigg] + s(x,t)$$
+$$\frac{\partial^2 u(x,t)}{\partial t^2} = c^2 \bigg[\frac{\partial^2 u(x,t)}{\partial x^2} \bigg] + s(x,t)$$
+
+$u(x,t)$ describes the displacement of string (in the vertical direction) at position $x$ and time $t$. 
+
+<div class="imgcap">
+  <img src="https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/index/1d_wave.png" alt="this slowpoke moves"  width="800"/>
+  <div class="thecap">Figure 1: Wave on a string. </div>
+</div>
+
+
 
 Using this as an example, I will explain
 - Finite Difference Method for solving PDEs
@@ -27,7 +35,7 @@ Using this as an example, I will explain
         - Neumann boundary conditions (Free boundary conditions)
         - Absorbing boundary conditions
 
-### 2D Wave Equation (NOT FINALIZED YET)
+## 2D Wave Equation (NOT FINALIZED YET)
 After finishing up the 1D case, I will delve into the 2D simulation, which is modeled using the 2D Wave Equation.
 
 $$\frac{\partial^2 p(x,y,t)}{\partial t^2} = c^2(x,y) \bigg[\frac{\partial^2 p(x,y,t)}{\partial x^2} + \frac{\partial^2 p(x,y,t)}{\partial y^2} \bigg] + s(x,y,t)$$
