@@ -1,4 +1,4 @@
-function wave_sim_1d(x_details::Dict{String, Int64}, t_details::Dict{String, Int64}, src_details::Dict{String, Float64}, c::Float64)
+function wave_sim_1d(x_details::Dict{String, Int64}, t_details::Dict{String, Int64}, src_details::Dict{String, Any}, c::Float64)
     # Space Discretization
 	x_min = x_details["x_min"]
 	x_max = x_details["x_max"]
@@ -18,7 +18,7 @@ function wave_sim_1d(x_details::Dict{String, Int64}, t_details::Dict{String, Int
 	t0 = src_details["t0"] # Source Time Shift
 	isrc = Int(floor(src_details["isrc"]/dx)+1) # Source Location
 	
-	src = -8. .* (t .- t0) .* f0 .* (exp.(-1.0 .* (4*f0)^2 .* (t .- t0).^2))
+	src = src_details["src"] # Source Function
 
     ########################################################
     ############ Finite Difference Simulation ##############

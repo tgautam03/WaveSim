@@ -35,7 +35,9 @@ The constant $c$ defines the speed of wave propagation. In this case, it is depe
 </div>
 ```
 
-Using this as an example, I will explain
+Finally, $s(x,t)$ is the source function and it is responsible for initiating the wave at location $x$ and time $t$. The definition of source function also dictates the shape of the resulting wave. 
+
+Using this as an example, I will explain in detail
 - Finite Difference Method for solving PDEs
 - Simulation Accuracy: 
     - Numerical Dispersion
