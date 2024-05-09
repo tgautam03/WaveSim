@@ -6,6 +6,7 @@ This is my attempt at simulating these waves (accurately) which can be modeled u
 $$\frac{\partial^2 p(x,y,z,t)}{\partial t^2} = c^2(x,y,z) \bigg[\frac{\partial^2 p(x,y,z,t)}{\partial x^2} + \frac{\partial^2 p(x,y,z,t)}{\partial y^2} + \frac{\partial^2 p(x,y,z,t)}{\partial z^2} \bigg] + s(x,y,z,t)$$
 
 ## 1D Wave Equation
+### Introduction
 I will start with the simplest case, i.e. 1D Wave Equation which can be seen as a model for wave on a string (homogenous material)
 
 $$\frac{\partial^2 u(x,t)}{\partial t^2} = c^2 \bigg[\frac{\partial^2 u(x,t)}{\partial x^2} \bigg] + s(x,t)$$
@@ -35,8 +36,40 @@ The constant $c$ defines the speed of wave propagation. In this case, it is depe
 </div>
 ```
 
-Finally, $s(x,t)$ is the source function and it is responsible for initiating the wave at location $x$ and time $t$. The definition of source function also dictates the shape of the resulting wave. 
+Finally, $s(x,t)$ is the source function and it is responsible for initiating the wave at location $x$ and time $t$. The definition of source function also dictates the shape of the resulting wave (see Figures 4 and 5). 
 
+```@raw html
+<div class="imgcap">
+  <img src="https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/index/1D_deriv_gauss_src.gif" alt="this slowpoke moves"  width="800"/>
+  <div class="thecap">Figure 4: Wave on a string using the derivative of Gaussian as a source function. </div>
+</div>
+```
+
+```@raw html
+<div class="imgcap">
+  <img src="https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/index/1D_gauss_src.gif" alt="this slowpoke moves"  width="800"/>
+  <div class="thecap">Figure 5: Wave on a string using the Gaussian as a source function. </div>
+</div>
+```
+
+One thing to remember is that partial differential equations (PDEs) are typically defined for the interior of a domain, not the boundary. This holds true for both spatial and temporal domains where we have to explicitly define 
+- Boundary Conditions: $u(x,t)$ at $x=0$ and $x=x_{max}$ for **all $t$ values!**
+- Initial Condition: $u(x,t)$ at $t=0$ for **all $x$ values!**
+
+For example, if our spatial and temporal domains range from 0 to 1, and we say that 
+- Boundary Conditions: $u(x=0,t)=u(x=1,t)=0$, 
+- Initial Condition: $u(x,t=0)=0$ 
+
+then the problem formulation looks something like
+- For $t=0$
+  - $u(x,0) = 0$
+- For $t>0$
+  - if $x=0$ or $x=1$
+    - $u(0,t)=u(1,t)=0$
+  - if $0<x<1$
+    - $\frac{\partial^2 u(x,t)}{\partial t^2} = c^2 \bigg[\frac{\partial^2 u(x,t)}{\partial x^2} \bigg] + s(x,t)$
+
+### Table of Contents
 Using this as an example, I will explain in detail
 - Finite Difference Method for solving PDEs
 - Simulation Accuracy: 

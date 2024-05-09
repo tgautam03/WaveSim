@@ -64,7 +64,7 @@ md"""
 """
 
 # ╔═╡ ce9660d5-a355-464c-9142-1bfd084fc658
-@bind space select(["Length of the String (in meters)", "Number of points in x dimension"], [PlutoUI.Select(100:100:1000), PlutoUI.Select(101:100:1001)])
+@bind space select(["Length of the String (in meters)", "Number of points in x dimension"], [PlutoUI.Select(100:100:1000), PlutoUI.Select(101:1000:11001)])
 
 # ╔═╡ 241fc0e7-8b6c-4d61-b7c8-95f331469dc4
 begin
@@ -81,7 +81,7 @@ md"""
 """
 
 # ╔═╡ 36b894da-0428-459c-92ff-0f3e34943769
-@bind time select(["How long to run the simulation (in seconds)", "Number of points in t dimension"], [PlutoUI.Select(1:10), PlutoUI.Select(1001:1000:10001)])
+@bind time select(["How long to run the simulation (in seconds)", "Number of points in t dimension"], [PlutoUI.Select(1:10), PlutoUI.Select(1001:10000:110001)])
 
 # ╔═╡ 17fe1153-8514-4876-b5b7-7ba0bd2d1d89
 begin
@@ -180,14 +180,16 @@ begin
 	# Animation
     anim = @animate for it in range(start=1, stop=nt, length=min(nt, 60*(t_max)*10))
 		t_val = round(it*(t_max)/(nt-1), digits=2)
-	    plot(x, p_sols[Int(floor(it)),:], ylims=(minimum(p_sols), maximum(p_sols)), label="Wave (c=$(c) m/s)")
+		plot(x, p_sols[Int(floor(it)),:], 
+			ylims=(minimum(p_sols), maximum(p_sols)), 
+			label="Wave (c=$(c) m/s)")
 		xlabel!("x(meters)")
 		ylabel!("u(x,t=$(t_val))")
 		title!("Wave at t=$(t_val) secs")
     end
 
-	# gif(anim, "anims/1D.gif", fps=60)
-	mp4(anim, "anims/1D.mp4", fps=60)
+	gif(anim, "anims/1D.gif", fps=60)
+	# mp4(anim, "anims/1D.mp4", fps=60)
 end
   ╠═╡ =#
 
