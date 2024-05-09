@@ -13,21 +13,26 @@ $$\frac{\partial^2 u(x,t)}{\partial t^2} = c^2 \bigg[\frac{\partial^2 u(x,t)}{\p
 
 The variable $u(x,t)$ describes the displacement of string (in the vertical direction) at position $x$ and time $t$. 
 
+---
 ```@raw html
 <div class="imgcap">
   <img src="https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/index/1d_wave.png" alt="this slowpoke moves"  width="800"/>
   <div class="thecap">Figure 1: Wave on a string. </div>
 </div>
 ```
-
+---
+\
 The constant $c$ defines the speed of wave propagation. In this case, it is dependent on the material property. The higher the value of $c$, the faster will the wave propagate.
 
+---
 ```@raw html
 <div class="imgcap">
   <img src="https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/index/1D_c1.gif" alt="this slowpoke moves"  width="800"/>
   <div class="thecap">Figure 2: Wave on a string with speed 334 m/s. </div>
 </div>
 ```
+---
+---
 
 ```@raw html
 <div class="imgcap">
@@ -35,42 +40,46 @@ The constant $c$ defines the speed of wave propagation. In this case, it is depe
   <div class="thecap">Figure 3: Wave on a string with speed 668 m/s. </div>
 </div>
 ```
-
+---
+\
 Finally, $s(x,t)$ is the source function and it is responsible for initiating the wave at location $x$ and time $t$. The definition of source function also dictates the shape of the resulting wave (see Figures 4 and 5). 
 
+---
 ```@raw html
 <div class="imgcap">
   <img src="https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/index/1D_deriv_gauss_src.gif" alt="this slowpoke moves"  width="800"/>
   <div class="thecap">Figure 4: Wave on a string using the derivative of Gaussian as a source function. </div>
 </div>
 ```
-
+---
+---
 ```@raw html
 <div class="imgcap">
   <img src="https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/index/1D_gauss_src.gif" alt="this slowpoke moves"  width="800"/>
   <div class="thecap">Figure 5: Wave on a string using the Gaussian as a source function. </div>
 </div>
 ```
-
+---
+\
 One thing to remember is that partial differential equations (PDEs) are typically defined for the interior of a domain, not the boundary. This holds true for both spatial and temporal domains where we have to explicitly define 
 - Boundary Conditions: $u(x,t)$ at $x=0$ and $x=x_{max}$ for **all $t$ values!**
 - Initial Condition: $u(x,t)$ at $t=0$ for **all $x$ values!**
 
-For example, if our spatial and temporal domains range from 0 to 1, and we say that 
+For example, if our spatial and temporal domains range from 0 to 1, and we can say that 
 - Boundary Conditions: $u(x=0,t)=u(x=1,t)=0$, 
 - Initial Condition: $u(x,t=0)=0$ 
 
 then the problem formulation looks something like
 - For $t=0$
-  - $u(x,0) = 0$
+  - The solution is $u(x,0) = 0$
 - For $t>0$
   - if $x=0$ or $x=1$
-    - $u(0,t)=u(1,t)=0$
+    - The solution is $u(0,t)=u(1,t)=0$
   - if $0<x<1$
-    - $\frac{\partial^2 u(x,t)}{\partial t^2} = c^2 \bigg[\frac{\partial^2 u(x,t)}{\partial x^2} \bigg] + s(x,t)$
+    - We get the solution by solving $\frac{\partial^2 u(x,t)}{\partial t^2} = c^2 \bigg[\frac{\partial^2 u(x,t)}{\partial x^2} \bigg] + s(x,t)$
 
 ### Table of Contents
-Using this as an example, I will explain in detail
+Using this as an example, I have explained in detail
 - Finite Difference Method for solving PDEs
 - Simulation Accuracy: 
     - Numerical Dispersion
