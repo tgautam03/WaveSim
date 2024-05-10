@@ -142,7 +142,7 @@ begin
 
 	if plt
 		# Plotting source Function
-	    p = scatter(t, src, title="Source Function", label="Source Function", markersize=1)
+	    p = scatter(t, src, title="Source Function", label="Source Function", markersize=1, dpi=1000)
 		xlabel!("t")
 		ylabel!("Amplitude")
 	end
@@ -167,7 +167,7 @@ p_sols = wave_sim_1d(x_details, t_details, src_details, c);
 begin
 	# Plotting
 	t_val = round(it*(t_max)/(nt-1), digits=2)
-	plot(x, p_sols[Int(floor(it)),:], ylims=(1.25*minimum(p_sols), 1.5*maximum(p_sols)), label="Wave (c=$(c) m/s)")
+	plot(x, p_sols[Int(floor(it)),:], ylims=(1.25*minimum(p_sols), 1.5*maximum(p_sols)), label="Wave (c=$(c) m/s)", dpi=1000)
 	xlabel!("x(meters)")
 	ylabel!("u(x,t=$(t_val))")
 	title!("Wave at t=$(t_val) secs")
@@ -182,7 +182,7 @@ begin
 		t_val = round(it*(t_max)/(nt-1), digits=2)
 		plot(x, p_sols[Int(floor(it)),:], 
 			ylims=(minimum(p_sols), maximum(p_sols)), 
-			label="Wave (c=$(c) m/s)")
+			label="Wave (c=$(c) m/s)", dpi=1000)
 		xlabel!("x(meters)")
 		ylabel!("u(x,t=$(t_val))")
 		title!("Wave at t=$(t_val) secs")
@@ -206,7 +206,7 @@ end
 # ╟─17fe1153-8514-4876-b5b7-7ba0bd2d1d89
 # ╟─d9417b50-b232-47cc-8d78-506aca36fbca
 # ╟─bd5d0e35-4bdd-488f-b8a5-bea04c27d764
-# ╟─c6d58808-b224-46f9-91f4-965c02dd32ec
+# ╠═c6d58808-b224-46f9-91f4-965c02dd32ec
 # ╟─2985d0e2-ae9b-41f3-996a-b8422c17ded8
 # ╟─c26a9e81-4dab-40f4-a9c8-d20ef3a1ae4a
 # ╟─14b955b6-f4ea-40ed-8340-996d75973135
