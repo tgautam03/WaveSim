@@ -50,7 +50,7 @@ $$\frac{u_{i}^{j+1} - 2u_{i}^{j}+ u_{i}^{j-1}}{dt^2} = c^2 \bigg[\frac{u_{i+1}^{
 ---
 ```@raw html
 <div class="imgcap">
-  <img src="https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/1d_wave/Difference_eq_pt.png" alt="this slowpoke moves"  width="800"/>
+  <img src="https://raw.githubusercontent.com/tgautam03/WaveSim/master/docs/src/img/1d_wave/Difference_eq_pts.png" alt="this slowpoke moves"  width="800"/>
   <div class="thecap">Figure 2: Connecting Discretized grid to the difference equations. </div>
 </div>
 ```
