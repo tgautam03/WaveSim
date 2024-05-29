@@ -47,6 +47,11 @@ function wave_sim_1d(x_details::Dict{String, Int64}, t_details::Dict{String, Int
                 end
             end
 
+            # ABC
+            kappa = c*dt/dx
+            p_next[1] = p[2] + (kappa-1)/(kappa+1) * (p_next[2]-p[1])
+            p_next[nx] = p[nx-1] + (kappa-1)/(kappa+1) * (p_next[nx-1]-p[nx])
+
         elseif op == 5
             # Looping over Space
             for ix in range(start=3, stop=nx-2)
@@ -59,6 +64,8 @@ function wave_sim_1d(x_details::Dict{String, Int64}, t_details::Dict{String, Int
                     p_next[ix] = (c*dt/dx)^2 * d2p_dx2 + 2*p[ix] - p_prev[ix]
                 end
             end
+
+            # ABC
         end
 
         
