@@ -51,7 +51,7 @@ function select(options, UItype)
 		$(inputs)
 		"""
 	end
-end
+end;
 
 # ╔═╡ b56e0a7c-c0a2-43f3-ba46-7f5c38d1cf97
 md"""
@@ -102,19 +102,6 @@ md"""
 # ╔═╡ bd5d0e35-4bdd-488f-b8a5-bea04c27d764
 @bind source select(["Pick a source function", "Source Frequency (in Hz)", "Source Initiation Time (in seconds)", "Plot Source Function"], [PlutoUI.Select(["Derivative of Gaussian", "Gaussian"]), PlutoUI.Select(5:5:30), PlutoUI.Slider(0.1:0.01:round(t_max/2, digits=2), show_value=true), PlutoUI.Select([true, false])])
 
-# ╔═╡ 2985d0e2-ae9b-41f3-996a-b8422c17ded8
-md"""
-# Finite Difference Simulation
-"""
-
-# ╔═╡ c26a9e81-4dab-40f4-a9c8-d20ef3a1ae4a
-md"""
-Source Location from x=0 (in meters)
-"""
-
-# ╔═╡ 14b955b6-f4ea-40ed-8340-996d75973135
-@bind isrc PlutoUI.Select([25,x_max/2,x_max-25])
-
 # ╔═╡ c6d58808-b224-46f9-91f4-965c02dd32ec
 begin
 	func_name, f0, t0, plt = source
@@ -132,16 +119,6 @@ begin
 		src = exp.(-1.0 .* (4*f0)^2 .* (t .- t0).^2)
 	end
 
-	# Space Discretization
-	x_details = Dict("x_min" => 0, "x_max" => x_max, "nx" => nx)
-
-	# Time Discretization
-	t_details = Dict("t_min" => 0, "t_max" => t_max, "nt" => nt)
-
-	# Source Details
-	src_details = Dict("f0" => f0, "t0" => t0, "isrc" => isrc, "src" => src)
-	
-
 	if plt
 		# Plotting source Function
 	    p = scatter(t, src, title="Source Function", label="Source Function", markersize=1, dpi=1000)
@@ -150,33 +127,45 @@ begin
 	end
 end
 
-# ╔═╡ e1c436ce-f879-40f3-8d2e-bd8562f5abbd
+# ╔═╡ 2985d0e2-ae9b-41f3-996a-b8422c17ded8
 md"""
-Medium Velocity (in m/s)
+# Finite Difference Simulation
 """
 
-# ╔═╡ d2b91e55-c921-486d-92ce-9cd04c54f60b
-@bind c PlutoUI.Select(100.:50:500.)
+# ╔═╡ f18d9481-13ae-49eb-b6fb-5501d00c2f4a
+@bind fdm_details select(["Source location from x=0 (in meters)", 
+	"Medium velocity (in m/s)", 
+	"FD scheme (3 point or 5 point)", 
+	"Boundary condition"],[
+	PlutoUI.Select([25,x_max/2,x_max-25]),
+	PlutoUI.Select(100.:50:500.), 
+	PlutoUI.Select([3, 5]),
+	PlutoUI.Select(["zero", "neumann", "absorbing"]),])
 
-# ╔═╡ 06f53907-8fff-4417-99f1-ded8ac3413e6
-md"""
-### CFL criteria: $(round(c*dt/dx, digits=3))
-"""
+# ╔═╡ b9dd9d24-bff2-4e84-b188-6dec8e865d60
+begin
+	isrc, c, op, boundary = fdm_details
 
-# ╔═╡ 35401446-7c59-4180-81ca-4232724f7740
-md"""
-FD scheme (3 point or 5 point)
-"""
+	# Space Discretization
+	x_details = Dict("x_min" => 0, "x_max" => x_max, "nx" => nx)
 
-# ╔═╡ 205bb373-c65a-4e73-abac-72e83c49857b
-@bind op PlutoUI.Select([3, 5])
+	# Time Discretization
+	t_details = Dict("t_min" => 0, "t_max" => t_max, "nt" => nt)
+
+	# Source Details
+	src_details = Dict("isrc" => isrc, "src" => src)
+
+	md"""
+	### CFL criteria: $(round(c*dt/dx, digits=3))
+	"""
+end
 
 # ╔═╡ e090a86d-7ed8-4428-b777-06383d62f492
-# Solution
-p_sols = wave_sim_1d(x_details, t_details, src_details, c, op);
-
-# ╔═╡ 2a602d52-d4f6-4894-b214-ba8a1c16fa89
-@bind it PlutoUI.Slider(range(start=1, stop=nt, length=min(nt, 60*(t_max)*10)), show_value=false)
+begin
+	p_sols = wave_sim_1d(x_details, t_details, src_details, c, op, boundary);
+	
+	@bind it PlutoUI.Slider(range(start=1, stop=nt, length=min(nt, 60*(t_max)*10)), show_value=false)
+end
 
 # ╔═╡ cf0e9ff0-dd7e-40e2-8544-e8d18ffa9e25
 begin
@@ -210,7 +199,7 @@ end
 
 # ╔═╡ Cell order:
 # ╟─206b9281-0aab-435d-8592-6e5169449832
-# ╠═d5e4988a-09a0-11ef-2eb9-97277c169c65
+# ╟─d5e4988a-09a0-11ef-2eb9-97277c169c65
 # ╟─ed6ee4ce-fcd8-403a-9061-d688737f87be
 # ╟─b56e0a7c-c0a2-43f3-ba46-7f5c38d1cf97
 # ╟─8ab95f04-2dad-4274-a7b5-69c23d5c2bb1
@@ -223,14 +212,8 @@ end
 # ╟─bd5d0e35-4bdd-488f-b8a5-bea04c27d764
 # ╟─c6d58808-b224-46f9-91f4-965c02dd32ec
 # ╟─2985d0e2-ae9b-41f3-996a-b8422c17ded8
-# ╟─06f53907-8fff-4417-99f1-ded8ac3413e6
-# ╟─c26a9e81-4dab-40f4-a9c8-d20ef3a1ae4a
-# ╟─14b955b6-f4ea-40ed-8340-996d75973135
-# ╟─e1c436ce-f879-40f3-8d2e-bd8562f5abbd
-# ╟─d2b91e55-c921-486d-92ce-9cd04c54f60b
-# ╟─35401446-7c59-4180-81ca-4232724f7740
-# ╟─205bb373-c65a-4e73-abac-72e83c49857b
+# ╟─f18d9481-13ae-49eb-b6fb-5501d00c2f4a
+# ╟─b9dd9d24-bff2-4e84-b188-6dec8e865d60
 # ╟─e090a86d-7ed8-4428-b777-06383d62f492
-# ╟─2a602d52-d4f6-4894-b214-ba8a1c16fa89
 # ╟─cf0e9ff0-dd7e-40e2-8544-e8d18ffa9e25
 # ╟─5f829cd4-1bca-4473-a8a7-aca6a91cbd91
