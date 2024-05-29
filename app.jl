@@ -69,9 +69,10 @@ md"""
 # ╔═╡ 241fc0e7-8b6c-4d61-b7c8-95f331469dc4
 begin
 	x_max, nx = space;
+	dx = (x_max)/(nx-1);
 
 	md"""
-	**Space Discretization Step Size (in meters): $(round((x_max)/(nx-1), digits=2))**
+	**Space Discretization Step Size (in meters): $(round(dx, digits=2))**
 	"""
 end
 
@@ -86,9 +87,10 @@ md"""
 # ╔═╡ 17fe1153-8514-4876-b5b7-7ba0bd2d1d89
 begin
 	t_max, nt = time;
+	dt = (t_max)/(nt-1);
 
 	md"""
-	**Time Discretization Step Size (in seconds): $(round((t_max)/(nt-1), digits=10))**
+	**Time Discretization Step Size (in seconds): $(round(dt, digits=10))**
 	"""
 end
 
@@ -125,7 +127,7 @@ begin
 	
 	# Source Function
 	if func_name == "Derivative of Gaussian"
-		src = -8. .* (t .- t0) .* f0 .* (exp.(-1.0 .* (4*f0)^2 .* (t .- t0).^2))
+		src = -8. .* (t .- t0) .* f0 .* (exp.(-1.0 .* (4*f0)^2 .* (t .- t0).^2)) / ((x_max-0)/(nx-1))
 	elseif func_name == "Gaussian"
 		src = exp.(-1.0 .* (4*f0)^2 .* (t .- t0).^2)
 	end
@@ -156,9 +158,22 @@ Medium Velocity (in m/s)
 # ╔═╡ d2b91e55-c921-486d-92ce-9cd04c54f60b
 @bind c PlutoUI.Select(100.:50:500.)
 
+# ╔═╡ 06f53907-8fff-4417-99f1-ded8ac3413e6
+md"""
+### CFL criteria: $(round(c*dt/dx, digits=3))
+"""
+
+# ╔═╡ 35401446-7c59-4180-81ca-4232724f7740
+md"""
+FD scheme (3 point or 5 point)
+"""
+
+# ╔═╡ 205bb373-c65a-4e73-abac-72e83c49857b
+@bind op PlutoUI.Select([3, 5])
+
 # ╔═╡ e090a86d-7ed8-4428-b777-06383d62f492
 # Solution
-p_sols = wave_sim_1d(x_details, t_details, src_details, c);
+p_sols = wave_sim_1d(x_details, t_details, src_details, c, op);
 
 # ╔═╡ 2a602d52-d4f6-4894-b214-ba8a1c16fa89
 @bind it PlutoUI.Slider(range(start=1, stop=nt, length=min(nt, 60*(t_max)*10)), show_value=false)
@@ -206,12 +221,15 @@ end
 # ╟─17fe1153-8514-4876-b5b7-7ba0bd2d1d89
 # ╟─d9417b50-b232-47cc-8d78-506aca36fbca
 # ╟─bd5d0e35-4bdd-488f-b8a5-bea04c27d764
-# ╠═c6d58808-b224-46f9-91f4-965c02dd32ec
+# ╟─c6d58808-b224-46f9-91f4-965c02dd32ec
 # ╟─2985d0e2-ae9b-41f3-996a-b8422c17ded8
+# ╟─06f53907-8fff-4417-99f1-ded8ac3413e6
 # ╟─c26a9e81-4dab-40f4-a9c8-d20ef3a1ae4a
 # ╟─14b955b6-f4ea-40ed-8340-996d75973135
 # ╟─e1c436ce-f879-40f3-8d2e-bd8562f5abbd
 # ╟─d2b91e55-c921-486d-92ce-9cd04c54f60b
+# ╟─35401446-7c59-4180-81ca-4232724f7740
+# ╟─205bb373-c65a-4e73-abac-72e83c49857b
 # ╟─e090a86d-7ed8-4428-b777-06383d62f492
 # ╟─2a602d52-d4f6-4894-b214-ba8a1c16fa89
 # ╟─cf0e9ff0-dd7e-40e2-8544-e8d18ffa9e25

@@ -9,6 +9,7 @@ makedocs(
         "Home" => "index.md",
         "1D Wave Equation" => Any[
             "1d_wave/1d_FDM.md",
+            "1d_wave/accuracy.md",
         ],
         "2D Wave Equation" => Any[
             "2d_wave/2d_FDM.md",
