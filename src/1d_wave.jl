@@ -63,9 +63,8 @@ function point_stencil_3(src, isrc, c, dx, nx, dt, nt, boundary)
             p_next[1] = p_next[2]
             p_next[nx] = p_next[nx-1]
         elseif boundary == "absorbing"
-            kappa = c*dt/dx
-            p_next[1] = p[2] + (kappa-1)/(kappa+1) * (p_next[2]-p[1])
-            p_next[nx] = p[nx-1] + (kappa-1)/(kappa+1) * (p_next[nx-1]-p[nx])
+            p_next[1] = p[2] + (c*dt-dx)/(c*dt+dx) * (p_next[2]-p[1])
+            p_next[nx] = p[nx-1] + (c*dt-dx)/(c*dt+dx) * (p_next[nx-1]-p[nx])
         end
 
         # Current Sol becomes Previous Sol
@@ -112,9 +111,8 @@ function point_stencil_5(src, isrc, c, dx, nx, dt, nt, boundary)
             p_next[1:2] .= p_next[3]
             p_next[nx-1:nx] .= p_next[nx-2]
         elseif boundary == "absorbing"
-            kappa = c*dt/dx
-            p_next[1:2] = p[2:3] + (kappa-1)/(kappa+1) * (p_next[2:3]-p[1:2])
-            p_next[nx-1:nx] = p[nx-2:nx-1] + (kappa-1)/(kappa+1) * (p_next[nx-2:nx-1]-p[nx-1:nx])
+            p_next[1:2] = p[2:3] + (c*dt-dx)/(c*dt+dx) * (p_next[2:3]-p[1:2])
+            p_next[nx-1:nx] = p[nx-2:nx-1] + (c*dt-dx)/(c*dt+dx) * (p_next[nx-2:nx-1]-p[nx-1:nx])
         end
 
         # Current Sol becomes Previous Sol
