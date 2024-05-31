@@ -46,12 +46,12 @@ function point_stencil_3(src, isrc, c, dx, nx, dt, nt, boundary)
         # Looping over Space
         for ix in range(start=2, stop=nx-1)
             # Evaluating 2nd derivative wrt x
-            d2p_dx2 = p[ix+1] - 2*p[ix] + p[ix-1]
+            d2p_dx2 = (p[ix+1] - 2*p[ix] + p[ix-1])/(dx^2)
             # Updating Solution
             if ix == isrc
-                p_next[ix] = (c*dt/dx)^2 * d2p_dx2 + 2*p[ix] - p_prev[ix] + dt^2 * src[it]
+                p_next[ix] = (c*dt)^2 * d2p_dx2 + 2*p[ix] - p_prev[ix] + dt^2 * src[it]
             else
-                p_next[ix] = (c*dt/dx)^2 * d2p_dx2 + 2*p[ix] - p_prev[ix]
+                p_next[ix] = (c*dt)^2 * d2p_dx2 + 2*p[ix] - p_prev[ix]
             end
         end
 
@@ -94,12 +94,12 @@ function point_stencil_5(src, isrc, c, dx, nx, dt, nt, boundary)
         # Looping over Space
         for ix in range(start=3, stop=nx-2)
             # Evaluating 2nd derivative wrt x
-            d2p_dx2 = -1/12 * p[ix+2] + 4/3  * p[ix+1] - 5/2 * p[ix] +4/3  * p[ix - 1] - 1/12 * p[ix - 2]
+            d2p_dx2 = (-1/12 * p[ix+2] + 4/3  * p[ix+1] - 5/2 * p[ix] +4/3  * p[ix - 1] - 1/12 * p[ix - 2])/(dx^2)
             # Updating Solution
             if ix == isrc
-                p_next[ix] = (c*dt/dx)^2 * d2p_dx2 + 2*p[ix] - p_prev[ix] + dt^2 * src[it]
+                p_next[ix] = (c*dt)^2 * d2p_dx2 + 2*p[ix] - p_prev[ix] + dt^2 * src[it]
             else
-                p_next[ix] = (c*dt/dx)^2 * d2p_dx2 + 2*p[ix] - p_prev[ix]
+                p_next[ix] = (c*dt)^2 * d2p_dx2 + 2*p[ix] - p_prev[ix]
             end
         end
 
