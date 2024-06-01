@@ -79,10 +79,10 @@ function point_stencil_3(src, isrc, c, dx, nx, dz, nz, dt, nt, boundary)
 			p_next[:,1] .= p_next[:,2]
             p_next[:,nz] .= p_next[:,nz-1]
         elseif boundary == "absorbing"
-            p_next[1,:] = p[2,:] + (c[1,:]*dt .- dx)/(c[1,:]*dt .+ dx) * (p_next[2,:]-p[1,:])
-            p_next[nx,:] = p[nx-1,:] + (c[nx,:]*dt .- dx)/(c[nx,:]*dt .+ dx) * (p_next[nx-1,:]-p[nx,:])
-			p_next[:,1] = p[:,2] + (c[:,1]*dt .- dx)/(c[:,1]*dt .+ dx) * (p_next[:,2]-p[:,1])
-            p_next[:,nz] = p[:,nz-1] + (c[:,nz]*dt .- dx)/(c[:,nz]*dt .+ dx) * (p_next[:,nz-1]-p[:,nz])
+            p_next[1,:] = p[2,:] + (c[1,:]*dt .- dx) ./ (c[1,:]*dt .+ dx) .* (p_next[2,:]-p[1,:])
+            p_next[nx,:] = p[nx-1,:] + (c[nx,:]*dt .- dx) ./ (c[nx,:]*dt .+ dx) .* (p_next[nx-1,:]-p[nx,:])
+			p_next[:,1] = p[:,2] + (c[:,1]*dt .- dx) ./ (c[:,1]*dt .+ dx) .* (p_next[:,2]-p[:,1])
+            p_next[:,nz] = p[:,nz-1] + (c[:,nz]*dt .- dx) ./ (c[:,nz]*dt .+ dx) .* (p_next[:,nz-1]-p[:,nz])
         end
 
         # Current Sol becomes Previous Sol
@@ -136,10 +136,10 @@ function point_stencil_5(src, isrc, c, dx, nx, dz, nz, dt, nt, boundary)
 			p_next[:,1:2] .= reshape(p_next[:,3], (size(p_next)[2], 1))
             p_next[:,nz-1:nz] .= reshape(p_next[:,nz-2], (size(p_next)[2], 1))
         elseif boundary == "absorbing"
-            p_next[1:2,:] = p[2:3,:] + (c[1:2,:]*dt .- dx)/(c[1:2,:]*dt .+ dx) * (p_next[2:3,:]-p[1:2,:])
-            p_next[nx-1:nx,:] = p[nx-2:nx-1,:] + (c[nx-1:nx,:]*dt .- dx)/(c[nx-1:nx,:]*dt .+ dx) * (p_next[nx-2:nx-1,:]-p[nx-1:nx,:])
-			p_next[:,1:2] = p[:,2:3] + (c[:,1:2]*dt .- dx)/(c[:,1:2]*dt .+ dx) * (p_next[:,2:3]-p[:,1:2])
-            p_next[:,nz-1:nz] = p[:,nz-2:nz-1] + (c[:,nz-1:nz]*dt .- dx)/(c[:,nz-1:nz]*dt .+ dx) * (p_next[:,nz-2:nz-1]-p[:,nz-1:nz])
+            p_next[1:2,:] = p[2:3,:] + (c[1:2,:]*dt .- dx) ./ (c[1:2,:]*dt .+ dx) .* (p_next[2:3,:]-p[1:2,:])
+            p_next[nx-1:nx,:] = p[nx-2:nx-1,:] + (c[nx-1:nx,:]*dt .- dx) ./ (c[nx-1:nx,:]*dt .+ dx) .* (p_next[nx-2:nx-1,:]-p[nx-1:nx,:])
+			p_next[:,1:2] = p[:,2:3] + (c[:,1:2]*dt .- dx) ./ (c[:,1:2]*dt .+ dx) .* (p_next[:,2:3]-p[:,1:2])
+            p_next[:,nz-1:nz] = p[:,nz-2:nz-1] + (c[:,nz-1:nz]*dt .- dx) ./ (c[:,nz-1:nz]*dt .+ dx) .* (p_next[:,nz-2:nz-1]-p[:,nz-1:nz])
         end
 
         # Current Sol becomes Previous Sol
