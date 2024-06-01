@@ -1,4 +1,4 @@
-function wave_sim_2d(s_details::Dict{String, Int64}, t_details::Dict{String, Int64}, src_details::Dict{String, Any}, c::Float64, op::Int64, boundary::String)
+function wave_sim_2d(s_details::Dict{String, Int64}, t_details::Dict{String, Int64}, src_details::Dict{String, Any}, c::Matrix, op::Int64, boundary::String)
 	# Space Discretization
 	x_min = s_details["s_min"]
 	x_max = s_details["s_max"]
@@ -60,9 +60,9 @@ function point_stencil_3(src, isrc, c, dx, nx, dz, nz, dt, nt, boundary)
 	            d2p_dz2 = (p[ix,iz+1] - 2*p[ix,iz] + p[ix,iz-1])/(dz^2)
 	            # Updating Solution
 	            if ix == isrc[1] && iz == isrc[2]
-	                p_next[ix,iz] = (c*dt)^2 * (d2p_dx2 + d2p_dz2) + 2*p[ix,iz] - p_prev[ix,iz] + dt^2 * src[it]
+	                p_next[ix,iz] = (c[ix,iz]*dt)^2 * (d2p_dx2 + d2p_dz2) + 2*p[ix,iz] - p_prev[ix,iz] + dt^2 * src[it]
 	            else
-	                p_next[ix,iz] = (c*dt)^2 * (d2p_dx2 + d2p_dz2) + 2*p[ix,iz] - p_prev[ix,iz]
+	                p_next[ix,iz] = (c[ix,iz]*dt)^2 * (d2p_dx2 + d2p_dz2) + 2*p[ix,iz] - p_prev[ix,iz]
 	            end
 	        end
 		end
@@ -79,10 +79,10 @@ function point_stencil_3(src, isrc, c, dx, nx, dz, nz, dt, nt, boundary)
 			p_next[:,1] .= p_next[:,2]
             p_next[:,nz] .= p_next[:,nz-1]
         elseif boundary == "absorbing"
-            p_next[1,:] = p[2,:] + (c*dt-dx)/(c*dt+dx) * (p_next[2,:]-p[1,:])
-            p_next[nx,:] = p[nx-1,:] + (c*dt-dx)/(c*dt+dx) * (p_next[nx-1,:]-p[nx,:])
-			p_next[:,1] = p[:,2] + (c*dt-dx)/(c*dt+dx) * (p_next[:,2]-p[:,1])
-            p_next[:,nz] = p[:,nz-1] + (c*dt-dx)/(c*dt+dx) * (p_next[:,nz-1]-p[:,nz])
+            p_next[1,:] = p[2,:] + (c[1,:]*dt .- dx)/(c[1,:]*dt .+ dx) * (p_next[2,:]-p[1,:])
+            p_next[nx,:] = p[nx-1,:] + (c[nx,:]*dt .- dx)/(c[nx,:]*dt .+ dx) * (p_next[nx-1,:]-p[nx,:])
+			p_next[:,1] = p[:,2] + (c[:,1]*dt .- dx)/(c[:,1]*dt .+ dx) * (p_next[:,2]-p[:,1])
+            p_next[:,nz] = p[:,nz-1] + (c[:,nz]*dt .- dx)/(c[:,nz]*dt .+ dx) * (p_next[:,nz-1]-p[:,nz])
         end
 
         # Current Sol becomes Previous Sol
@@ -117,9 +117,9 @@ function point_stencil_5(src, isrc, c, dx, nx, dz, nz, dt, nt, boundary)
 	            d2p_dz2 = (-1/12 * p[ix, iz+2] + 4/3  * p[ix,iz+1] - 5/2 * p[ix,iz] +4/3  * p[ix,iz-1] - 1/12 * p[ix,iz-2])/(dz^2)
 	            # Updating Solution
 	            if ix == isrc[1] && iz == isrc[2]
-	                p_next[ix,iz] = (c*dt)^2 * (d2p_dx2 + d2p_dz2) + 2*p[ix,iz] - p_prev[ix,iz] + dt^2 * src[it]
+	                p_next[ix,iz] = (c[ix,iz]*dt)^2 * (d2p_dx2 + d2p_dz2) + 2*p[ix,iz] - p_prev[ix,iz] + dt^2 * src[it]
 	            else
-	                p_next[ix,iz] = (c*dt)^2 * (d2p_dx2 + d2p_dz2) + 2*p[ix,iz] - p_prev[ix,iz]
+	                p_next[ix,iz] = (c[ix,iz]*dt)^2 * (d2p_dx2 + d2p_dz2) + 2*p[ix,iz] - p_prev[ix,iz]
 	            end
 	        end
 		end
@@ -136,10 +136,10 @@ function point_stencil_5(src, isrc, c, dx, nx, dz, nz, dt, nt, boundary)
 			p_next[:,1:2] .= reshape(p_next[:,3], (size(p_next)[2], 1))
             p_next[:,nz-1:nz] .= reshape(p_next[:,nz-2], (size(p_next)[2], 1))
         elseif boundary == "absorbing"
-            p_next[1:2,:] = p[2:3,:] + (c*dt-dx)/(c*dt+dx) * (p_next[2:3,:]-p[1:2,:])
-            p_next[nx-1:nx,:] = p[nx-2:nx-1,:] + (c*dt-dx)/(c*dt+dx) * (p_next[nx-2:nx-1,:]-p[nx-1:nx,:])
-			p_next[:,1:2] = p[:,2:3] + (c*dt-dx)/(c*dt+dx) * (p_next[:,2:3]-p[:,1:2])
-            p_next[:,nz-1:nz] = p[:,nz-2:nz-1] + (c*dt-dx)/(c*dt+dx) * (p_next[:,nz-2:nz-1]-p[:,nz-1:nz])
+            p_next[1:2,:] = p[2:3,:] + (c[1:2,:]*dt .- dx)/(c[1:2,:]*dt .+ dx) * (p_next[2:3,:]-p[1:2,:])
+            p_next[nx-1:nx,:] = p[nx-2:nx-1,:] + (c[nx-1:nx,:]*dt .- dx)/(c[nx-1:nx,:]*dt .+ dx) * (p_next[nx-2:nx-1,:]-p[nx-1:nx,:])
+			p_next[:,1:2] = p[:,2:3] + (c[:,1:2]*dt .- dx)/(c[:,1:2]*dt .+ dx) * (p_next[:,2:3]-p[:,1:2])
+            p_next[:,nz-1:nz] = p[:,nz-2:nz-1] + (c[:,nz-1:nz]*dt .- dx)/(c[:,nz-1:nz]*dt .+ dx) * (p_next[:,nz-2:nz-1]-p[:,nz-1:nz])
         end
 
         # Current Sol becomes Previous Sol

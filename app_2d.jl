@@ -139,18 +139,27 @@ md"""
 # ╔═╡ f18d9481-13ae-49eb-b6fb-5501d00c2f4a
 @bind fdm_details select(["Source location from x=0 (in meters)",
 	"Source location from z=0 (in meters)",
-	"Medium velocity (in m/s)", 
+	"Medium velocity 1 (in m/s)", 
+	"Medium velocity 2 (in m/s)", 
+	"Interface location from z=0 (in meters)",
 	"FD scheme (3 point or 5 point)", 
 	"Boundary condition"],[
 	PlutoUI.NumberField(25:x_max-25, default=x_max/2),
 	PlutoUI.NumberField(25:z_max-25, default=z_max/2),
 	PlutoUI.Select(100.:50:500.), 
+	PlutoUI.Select(100.:50:500.), 
+	PlutoUI.NumberField(25:z_max-25, default=z_max/4),
 	PlutoUI.Select([3, 5]),
 	PlutoUI.Select(["zero", "neumann", "absorbing"]),])
 
 # ╔═╡ b9dd9d24-bff2-4e84-b188-6dec8e865d60
 begin
-	isrc_z, isrc_x, c, op, boundary = fdm_details
+	isrc_z, isrc_x, c1, c2, interface_loc, op, boundary = fdm_details
+
+	# Velocity Profile
+	c = ones(nx,nz)
+	c[1:Int(interface_loc/dz), : ] .= c2
+	c[Int(interface_loc/dz):nz , :] .= c1
 
 	# Space Discretization
 	s_details = Dict("s_min" => 0, "s_max" => x_max, "ns" => nx)
@@ -162,8 +171,17 @@ begin
 	src_details = Dict("isrc_x" => isrc_x, "isrc_z" => isrc_z, "src" => src)
 
 	md"""
-	### CFL criteria: $(round((c*dt/dx)+(c*dt/dz), digits=3))
+	### CFL criteria: $(round((maximum(c)*dt/dx)+(maximum(c)*dt/dz), digits=3))
 	"""
+end
+
+# ╔═╡ dcb8b5fb-93a8-496c-ac67-39c9197a370a
+begin
+	# Plotting
+	heatmap(x, x, c, dpi=1000)
+	xlabel!("x(meters)")
+	ylabel!("z(meters)")
+	title!("Velocity profile")
 end
 
 # ╔═╡ e090a86d-7ed8-4428-b777-06383d62f492
@@ -187,7 +205,7 @@ end
 begin
 	# Plotting
 	t_val_ = round(it*(t_max)/(nt-1), digits=2)
-	heatmap(x, x, p_sols[Int(floor(it)),:,:], clims=(10^(0)*minimum(p_sols), 10^(0)*maximum(p_sols)), dpi=1000)
+	heatmap(x, x, p_sols[Int(floor(it)),:,:], clims=(10^(-1)*minimum(p_sols), 10^(-1)*maximum(p_sols)), dpi=1000)
 	xlabel!("x(meters)")
 	ylabel!("z(meters)")
 	title!("Wave at t=$(t_val_) secs")
@@ -210,6 +228,7 @@ end
 # ╟─2985d0e2-ae9b-41f3-996a-b8422c17ded8
 # ╟─f18d9481-13ae-49eb-b6fb-5501d00c2f4a
 # ╟─b9dd9d24-bff2-4e84-b188-6dec8e865d60
+# ╟─dcb8b5fb-93a8-496c-ac67-39c9197a370a
 # ╟─e090a86d-7ed8-4428-b777-06383d62f492
 # ╟─cf0e9ff0-dd7e-40e2-8544-e8d18ffa9e25
 # ╟─50856404-6e2a-4923-8210-babf7993142f
