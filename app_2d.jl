@@ -211,6 +211,36 @@ begin
 	title!("Wave at t=$(t_val_) secs")
 end
 
+# ╔═╡ 8eb7e4f2-d39a-43ba-9538-00868c40969d
+begin
+	# Animation
+    anim = @animate for it in range(start=1, stop=nt, length=min(nt, 60*(t_max)*10))
+		t_val__ = round(it*(t_max)/(nt-1), digits=2)
+		plot(x, x, p_sols[Int(floor(it)),:,:], st=:surface, clims=(1e-1*minimum(p_sols), 1e-1*maximum(p_sols)), zlims=(1*minimum(p_sols), 1*maximum(p_sols)), dpi=1000)
+		xlabel!("x(meters)")
+		ylabel!("z(meters)")
+		title!("Wave at t=$(t_val__) secs")
+    end
+
+	# gif(anim, "anims/1D.gif", fps=60)
+	mp4(anim, "anims/2D_tsunami.mp4", fps=60)
+end
+
+# ╔═╡ 3a8559f5-ac3d-444a-82ec-0182743598ca
+begin
+	# Animation
+    anim_ = @animate for it in range(start=1, stop=nt, length=min(nt, 60*(t_max)*10))
+		t_val___ = round(it*(t_max)/(nt-1), digits=2)
+		heatmap(x, x, p_sols[Int(floor(it)),:,:], clims=(10^(-1)*minimum(p_sols), 10^(-1)*maximum(p_sols)), dpi=1000)
+		xlabel!("x(meters)")
+		ylabel!("z(meters)")
+		title!("Wave at t=$(t_val___) secs")
+    end
+
+	# gif(anim_, "anims/1D.gif", fps=60)
+	mp4(anim_, "anims/2D_eq.mp4", fps=60)
+end
+
 # ╔═╡ Cell order:
 # ╟─206b9281-0aab-435d-8592-6e5169449832
 # ╠═d5e4988a-09a0-11ef-2eb9-97277c169c65
@@ -232,3 +262,5 @@ end
 # ╟─e090a86d-7ed8-4428-b777-06383d62f492
 # ╟─cf0e9ff0-dd7e-40e2-8544-e8d18ffa9e25
 # ╟─50856404-6e2a-4923-8210-babf7993142f
+# ╟─8eb7e4f2-d39a-43ba-9538-00868c40969d
+# ╟─3a8559f5-ac3d-444a-82ec-0182743598ca

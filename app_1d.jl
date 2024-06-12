@@ -116,7 +116,7 @@ begin
 	if func_name == "Derivative of Gaussian"
 		src = -8. .* (t .- t0) .* f0 .* (exp.(-1.0 .* (4*f0)^2 .* (t .- t0).^2)) / ((x_max-0)/(nx-1))
 	elseif func_name == "Gaussian"
-		src = exp.(-1.0 .* (4*f0)^2 .* (t .- t0).^2)
+		src = exp.(-1.0 .* (4*f0)^2 .* (t .- t0).^2) / ((x_max-0)/(nx-1))
 	end
 
 	if plt
@@ -138,7 +138,7 @@ md"""
 	"FD scheme (3 point or 5 point)", 
 	"Boundary condition"],[
 	PlutoUI.Select([25,x_max/2,x_max-25]),
-	PlutoUI.Select(100.:50:500.), 
+	PlutoUI.Select(50.:50:500.), 
 	PlutoUI.Select([3, 5]),
 	PlutoUI.Select(["zero", "neumann", "absorbing"]),])
 
@@ -185,15 +185,15 @@ begin
     anim = @animate for it in range(start=1, stop=nt, length=min(nt, 60*(t_max)*10))
 		t_val = round(it*(t_max)/(nt-1), digits=2)
 		plot(x, p_sols[Int(floor(it)),:], 
-			ylims=(minimum(p_sols), maximum(p_sols)), 
+			ylims=(1.25*minimum(p_sols), 1.25*maximum(p_sols)), 
 			label="Wave (c=$(c) m/s)", dpi=1000)
 		xlabel!("x(meters)")
 		ylabel!("u(x,t=$(t_val))")
 		title!("Wave at t=$(t_val) secs")
     end
 
-	gif(anim, "anims/1D.gif", fps=60)
-	# mp4(anim, "anims/1D.mp4", fps=60)
+	# gif(anim, "anims/1D.gif", fps=60)
+	mp4(anim, "anims/1D_ab.mp4", fps=60)
 end
   ╠═╡ =#
 
@@ -214,6 +214,6 @@ end
 # ╟─2985d0e2-ae9b-41f3-996a-b8422c17ded8
 # ╟─f18d9481-13ae-49eb-b6fb-5501d00c2f4a
 # ╟─b9dd9d24-bff2-4e84-b188-6dec8e865d60
-# ╠═e090a86d-7ed8-4428-b777-06383d62f492
+# ╟─e090a86d-7ed8-4428-b777-06383d62f492
 # ╠═cf0e9ff0-dd7e-40e2-8544-e8d18ffa9e25
-# ╟─5f829cd4-1bca-4473-a8a7-aca6a91cbd91
+# ╠═5f829cd4-1bca-4473-a8a7-aca6a91cbd91
