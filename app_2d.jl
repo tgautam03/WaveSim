@@ -104,7 +104,7 @@ md"""
 """
 
 # ╔═╡ bd5d0e35-4bdd-488f-b8a5-bea04c27d764
-@bind source select(["Pick a source function", "Source Frequency (in Hz)", "Source Initiation Time (in seconds)", "Plot Source Function"], [PlutoUI.Select(["Derivative of Gaussian", "Gaussian"]), PlutoUI.Select(5:5:30), PlutoUI.Slider(0.1:0.01:round(t_max/2, digits=2), show_value=true), PlutoUI.Select([true, false])])
+@bind source select(["Pick a source function", "Source Frequency (in Hz)", "Source Initiation Time (in seconds)", "Plot Source Function"], [PlutoUI.Select(["Derivative of Gaussian", "Gaussian"]), PlutoUI.Select(5:5:30), PlutoUI.Slider(0.05:0.01:round(t_max/2, digits=2), show_value=true), PlutoUI.Select([true, false])])
 
 # ╔═╡ c6d58808-b224-46f9-91f4-965c02dd32ec
 begin
@@ -170,6 +170,9 @@ begin
 	# Source Details
 	src_details = Dict("isrc_x" => isrc_x, "isrc_z" => isrc_z, "src" => src)
 
+	# Solution
+	p_sols = wave_sim_2d(s_details, t_details, src_details, c, op, boundary);
+
 	md"""
 	### CFL criteria: $(round((maximum(c)*dt/dx)+(maximum(c)*dt/dz), digits=3))
 	"""
@@ -184,34 +187,28 @@ begin
 	title!("Velocity profile")
 end
 
-# ╔═╡ e090a86d-7ed8-4428-b777-06383d62f492
-begin
-	p_sols = wave_sim_2d(s_details, t_details, src_details, c, op, boundary);
-	
-	@bind it PlutoUI.Slider(range(start=1, stop=nt, length=min(nt, 60*(t_max)*10)), show_value=false)
-end
+# ╔═╡ edbd96e2-9f8b-4919-882c-a41c6970e3a7
+@bind sim_details select(["Time",
+	"Camera Axis 1",
+	"Camera Axis 2"],[
+	PlutoUI.Slider(range(start=1, stop=nt, length=min(nt, 60*(t_max)*10)), show_value=false),
+	PlutoUI.Slider(range(start=30, stop=150, length=150-30+1), show_value=true, default=45),
+	PlutoUI.Slider(range(start=1, stop=89, length=89), show_value=true, default=30),])
 
 # ╔═╡ cf0e9ff0-dd7e-40e2-8544-e8d18ffa9e25
 begin
 	# Plotting
+	it, xcam, ycam = sim_details
 	t_val = round(it*(t_max)/(nt-1), digits=2)
-	plot(x, x, p_sols[Int(floor(it)),:,:], st=:surface, clims=(1e-1*minimum(p_sols), 1e-1*maximum(p_sols)), zlims=(1*minimum(p_sols), 1*maximum(p_sols)), dpi=1000)
+	plot(x, x, p_sols[Int(floor(it)),:,:], st=:surface, zshowaxis=false, clims=(1e-1*minimum(p_sols), 1e-1*maximum(p_sols)), zlims=(1*minimum(p_sols), 1*maximum(p_sols)), dpi=300, legend = :none, camera=(xcam, ycam), size=(800,800))
 	xlabel!("x(meters)")
 	ylabel!("z(meters)")
 	title!("Wave at t=$(t_val) secs")
 end
 
-# ╔═╡ 50856404-6e2a-4923-8210-babf7993142f
-begin
-	# Plotting
-	t_val_ = round(it*(t_max)/(nt-1), digits=2)
-	heatmap(x, x, p_sols[Int(floor(it)),:,:], clims=(10^(-1)*minimum(p_sols), 10^(-1)*maximum(p_sols)), dpi=1000)
-	xlabel!("x(meters)")
-	ylabel!("z(meters)")
-	title!("Wave at t=$(t_val_) secs")
-end
-
 # ╔═╡ 8eb7e4f2-d39a-43ba-9538-00868c40969d
+# ╠═╡ disabled = true
+#=╠═╡
 begin
 	# Animation
     anim = @animate for it in range(start=1, stop=nt, length=min(nt, 60*(t_max)*10))
@@ -225,8 +222,11 @@ begin
 	# gif(anim, "anims/1D.gif", fps=60)
 	mp4(anim, "anims/2D_tsunami.mp4", fps=60)
 end
+  ╠═╡ =#
 
 # ╔═╡ 3a8559f5-ac3d-444a-82ec-0182743598ca
+# ╠═╡ disabled = true
+#=╠═╡
 begin
 	# Animation
     anim_ = @animate for it in range(start=1, stop=nt, length=min(nt, 60*(t_max)*10))
@@ -240,6 +240,7 @@ begin
 	# gif(anim_, "anims/1D.gif", fps=60)
 	mp4(anim_, "anims/2D_eq.mp4", fps=60)
 end
+  ╠═╡ =#
 
 # ╔═╡ Cell order:
 # ╟─206b9281-0aab-435d-8592-6e5169449832
@@ -259,8 +260,7 @@ end
 # ╟─f18d9481-13ae-49eb-b6fb-5501d00c2f4a
 # ╟─b9dd9d24-bff2-4e84-b188-6dec8e865d60
 # ╟─dcb8b5fb-93a8-496c-ac67-39c9197a370a
-# ╟─e090a86d-7ed8-4428-b777-06383d62f492
+# ╟─edbd96e2-9f8b-4919-882c-a41c6970e3a7
 # ╟─cf0e9ff0-dd7e-40e2-8544-e8d18ffa9e25
-# ╟─50856404-6e2a-4923-8210-babf7993142f
 # ╟─8eb7e4f2-d39a-43ba-9538-00868c40969d
 # ╟─3a8559f5-ac3d-444a-82ec-0182743598ca
