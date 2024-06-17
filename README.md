@@ -1,5 +1,7 @@
 # WaveSim
-1D and 2D wave simulation from scratch. For more details, please check out this [YouTube video]().
+1D and 2D wave simulation from scratch. For more details, please check out this [YouTube video](https://youtu.be/4IL8n8yYNjw).
+
+![thumbnail](https://raw.githubusercontent.com/tgautam03/WaveSim/master/thumbnail.png)
 
 
 The repository is setup as a package with source code in the folder named `src`. 
