@@ -64,11 +64,11 @@ md"""
 """
 
 # ╔═╡ ce9660d5-a355-464c-9142-1bfd084fc658
-@bind space select(["Length of the String (in meters)", "Number of points in x dimension"], [PlutoUI.Select(100:100:1000), PlutoUI.Select(101:1000:11001)])
+@bind space select(["Length of the String (in meters)", "Number of points in x dimension"], [PlutoUI.Select(100:100), PlutoUI.Select(101:1000:11001)])
 
 # ╔═╡ 241fc0e7-8b6c-4d61-b7c8-95f331469dc4
 begin
-	x_max, nx = space;
+	x_max, nx = space
 	dx = (x_max)/(nx-1);
 
 	md"""
@@ -82,7 +82,7 @@ md"""
 """
 
 # ╔═╡ 36b894da-0428-459c-92ff-0f3e34943769
-@bind time select(["How long to run the simulation (in seconds)", "Number of points in t dimension"], [PlutoUI.Select(1:10), PlutoUI.Select(1001:10000:110001)])
+@bind time select(["How long to run the simulation (in seconds)", "Number of points in t dimension"], [PlutoUI.Select(1:10, default=2), PlutoUI.Select(1001:1000:11001, default=2001)])
 
 # ╔═╡ 17fe1153-8514-4876-b5b7-7ba0bd2d1d89
 begin
@@ -100,7 +100,7 @@ md"""
 """
 
 # ╔═╡ bd5d0e35-4bdd-488f-b8a5-bea04c27d764
-@bind source select(["Pick a source function", "Source Frequency (in Hz)", "Source Initiation Time (in seconds)", "Plot Source Function"], [PlutoUI.Select(["Derivative of Gaussian", "Gaussian"]), PlutoUI.Select(5:5:30), PlutoUI.Slider(0.1:0.01:round(t_max/2, digits=2), show_value=true), PlutoUI.Select([true, false])])
+@bind source select(["Pick a source function", "Source Frequency (in Hz)", "Source Initiation Time (in seconds)", "Plot Source Function"], [PlutoUI.Select(["Derivative of Gaussian", "Gaussian"]), PlutoUI.Select(5:5:30, default=5), PlutoUI.Slider(0.1:0.01:round(t_max/2, digits=2), show_value=true), PlutoUI.Select([true, false])])
 
 # ╔═╡ c6d58808-b224-46f9-91f4-965c02dd32ec
 begin
@@ -137,7 +137,7 @@ md"""
 	"Medium velocity (in m/s)", 
 	"FD scheme (3 point or 5 point)", 
 	"Boundary condition"],[
-	PlutoUI.Select([25,x_max/2,x_max-25]),
+	PlutoUI.Select([25,x_max/2,x_max-25], default=x_max/2),
 	PlutoUI.Select(50.:50:500.), 
 	PlutoUI.Select([3, 5]),
 	PlutoUI.Select(["zero", "neumann", "absorbing"]),])
@@ -171,7 +171,7 @@ end
 begin
 	# Plotting
 	t_val = round(it*(t_max)/(nt-1), digits=2)
-	plot(x, p_sols[Int(floor(it)),:], ylims=(1.25*minimum(p_sols), 1.5*maximum(p_sols)), label="Wave (c=$(c) m/s)", dpi=1000)
+	plot(x, p_sols[Int(floor(it)),:], ylims=(min(1.25*minimum(p_sols), -1.5*maximum(p_sols)), 1.5*maximum(p_sols)), label="Wave (c=$(c) m/s)", dpi=1000)
 	xlabel!("x(meters)")
 	ylabel!("u(x,t=$(t_val))")
 	title!("Wave at t=$(t_val) secs")
@@ -186,20 +186,20 @@ begin
 		t_val = round(it*(t_max)/(nt-1), digits=2)
 		plot(x, p_sols[Int(floor(it)),:], 
 			ylims=(1.25*minimum(p_sols), 1.25*maximum(p_sols)), 
-			label="Wave (c=$(c) m/s)", dpi=1000)
+			label="Wave (c=$(c) m/s)", dpi=300)
 		xlabel!("x(meters)")
 		ylabel!("u(x,t=$(t_val))")
 		title!("Wave at t=$(t_val) secs")
     end
 
 	# gif(anim, "anims/1D.gif", fps=60)
-	mp4(anim, "anims/1D_ab.mp4", fps=60)
+	mp4(anim, "anims/1D_zb.mp4", fps=60)
 end
   ╠═╡ =#
 
 # ╔═╡ Cell order:
 # ╟─206b9281-0aab-435d-8592-6e5169449832
-# ╠═d5e4988a-09a0-11ef-2eb9-97277c169c65
+# ╟─d5e4988a-09a0-11ef-2eb9-97277c169c65
 # ╟─ed6ee4ce-fcd8-403a-9061-d688737f87be
 # ╟─b56e0a7c-c0a2-43f3-ba46-7f5c38d1cf97
 # ╟─8ab95f04-2dad-4274-a7b5-69c23d5c2bb1
@@ -210,10 +210,10 @@ end
 # ╟─17fe1153-8514-4876-b5b7-7ba0bd2d1d89
 # ╟─d9417b50-b232-47cc-8d78-506aca36fbca
 # ╟─bd5d0e35-4bdd-488f-b8a5-bea04c27d764
-# ╠═c6d58808-b224-46f9-91f4-965c02dd32ec
+# ╟─c6d58808-b224-46f9-91f4-965c02dd32ec
 # ╟─2985d0e2-ae9b-41f3-996a-b8422c17ded8
 # ╟─f18d9481-13ae-49eb-b6fb-5501d00c2f4a
 # ╟─b9dd9d24-bff2-4e84-b188-6dec8e865d60
 # ╟─e090a86d-7ed8-4428-b777-06383d62f492
-# ╠═cf0e9ff0-dd7e-40e2-8544-e8d18ffa9e25
-# ╠═5f829cd4-1bca-4473-a8a7-aca6a91cbd91
+# ╟─cf0e9ff0-dd7e-40e2-8544-e8d18ffa9e25
+# ╟─5f829cd4-1bca-4473-a8a7-aca6a91cbd91

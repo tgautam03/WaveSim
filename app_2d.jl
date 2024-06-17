@@ -86,7 +86,7 @@ md"""
 """
 
 # ╔═╡ 36b894da-0428-459c-92ff-0f3e34943769
-@bind time select(["How long to run the simulation (in seconds)", "Number of points in t dimension"], [PlutoUI.Select(1:10), PlutoUI.Select(1001:1000:10001)])
+@bind time select(["How long to run the simulation (in seconds)", "Number of points in t dimension"], [PlutoUI.Select(1:10, default=1), PlutoUI.Select(1001:1000:11001, default=1001)])
 
 # ╔═╡ 17fe1153-8514-4876-b5b7-7ba0bd2d1d89
 begin
@@ -104,7 +104,7 @@ md"""
 """
 
 # ╔═╡ bd5d0e35-4bdd-488f-b8a5-bea04c27d764
-@bind source select(["Pick a source function", "Source Frequency (in Hz)", "Source Initiation Time (in seconds)", "Plot Source Function"], [PlutoUI.Select(["Derivative of Gaussian", "Gaussian"]), PlutoUI.Select(5:5:30), PlutoUI.Slider(0.05:0.01:round(t_max/2, digits=2), show_value=true), PlutoUI.Select([true, false])])
+@bind source select(["Pick a source function", "Source Frequency (in Hz)", "Source Initiation Time (in seconds)", "Plot Source Function"], [PlutoUI.Select(["Derivative of Gaussian", "Gaussian"]), PlutoUI.Select(5:5:30), PlutoUI.Slider(0.1:0.01:round(t_max/2, digits=2), show_value=true), PlutoUI.Select([true, false])])
 
 # ╔═╡ c6d58808-b224-46f9-91f4-965c02dd32ec
 begin
@@ -191,7 +191,7 @@ end
 @bind sim_details select(["Time",
 	"Camera Axis 1",
 	"Camera Axis 2"],[
-	PlutoUI.Slider(range(start=1, stop=nt, length=min(nt, 60*(t_max)*10)), show_value=false),
+	PlutoUI.Slider(range(start=1, stop=nt, length=min(nt, 60)), show_value=false),
 	PlutoUI.Slider(range(start=30, stop=150, length=150-30+1), show_value=true, default=45),
 	PlutoUI.Slider(range(start=1, stop=89, length=89), show_value=true, default=30),])
 
@@ -200,10 +200,11 @@ begin
 	# Plotting
 	it, xcam, ycam = sim_details
 	t_val = round(it*(t_max)/(nt-1), digits=2)
-	plot(x, x, p_sols[Int(floor(it)),:,:], st=:surface, zshowaxis=false, clims=(1e-1*minimum(p_sols), 1e-1*maximum(p_sols)), zlims=(1*minimum(p_sols), 1*maximum(p_sols)), dpi=300, legend = :none, camera=(xcam, ycam), size=(800,800))
+	plot(x, x, p_sols[Int(floor(it)),:,:], st=:surface, zshowaxis=false, clims=(1e-1*minimum(p_sols), 1e-1*maximum(p_sols)), zlims=(1*minimum(p_sols), 1*maximum(p_sols)), legend = :none, camera=(xcam, ycam), size=(1200,800))
 	xlabel!("x(meters)")
 	ylabel!("z(meters)")
 	title!("Wave at t=$(t_val) secs")
+	# title!("Wave Simulation", titlefontsize=68)
 end
 
 # ╔═╡ 8eb7e4f2-d39a-43ba-9538-00868c40969d
@@ -213,14 +214,14 @@ begin
 	# Animation
     anim = @animate for it in range(start=1, stop=nt, length=min(nt, 60*(t_max)*10))
 		t_val__ = round(it*(t_max)/(nt-1), digits=2)
-		plot(x, x, p_sols[Int(floor(it)),:,:], st=:surface, clims=(1e-1*minimum(p_sols), 1e-1*maximum(p_sols)), zlims=(1*minimum(p_sols), 1*maximum(p_sols)), dpi=1000)
+		plot(x, x, p_sols[Int(floor(it)),:,:], st=:surface, clims=(1e-1*minimum(p_sols), 1e-1*maximum(p_sols)), zlims=(1*minimum(p_sols), 1*maximum(p_sols)), legend = :none, camera=(xcam, ycam), size=(1200,800), dpi=500)
 		xlabel!("x(meters)")
 		ylabel!("z(meters)")
-		title!("Wave at t=$(t_val__) secs")
+		title!("Wave Simulation", titlefontsize=68)
     end
 
 	# gif(anim, "anims/1D.gif", fps=60)
-	mp4(anim, "anims/2D_tsunami.mp4", fps=60)
+	mp4(anim, "anims/2D_tsunami_thumbnail.mp4", fps=60)
 end
   ╠═╡ =#
 
@@ -244,7 +245,7 @@ end
 
 # ╔═╡ Cell order:
 # ╟─206b9281-0aab-435d-8592-6e5169449832
-# ╠═d5e4988a-09a0-11ef-2eb9-97277c169c65
+# ╟─d5e4988a-09a0-11ef-2eb9-97277c169c65
 # ╟─ed6ee4ce-fcd8-403a-9061-d688737f87be
 # ╟─b56e0a7c-c0a2-43f3-ba46-7f5c38d1cf97
 # ╟─8ab95f04-2dad-4274-a7b5-69c23d5c2bb1
@@ -262,5 +263,5 @@ end
 # ╟─dcb8b5fb-93a8-496c-ac67-39c9197a370a
 # ╟─edbd96e2-9f8b-4919-882c-a41c6970e3a7
 # ╟─cf0e9ff0-dd7e-40e2-8544-e8d18ffa9e25
-# ╟─8eb7e4f2-d39a-43ba-9538-00868c40969d
+# ╠═8eb7e4f2-d39a-43ba-9538-00868c40969d
 # ╟─3a8559f5-ac3d-444a-82ec-0182743598ca
