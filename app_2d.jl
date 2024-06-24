@@ -25,7 +25,7 @@ begin
 
     using WaveSim
 	using Plots
-	theme(:dracula)
+	theme(:orange)
 	using PlutoUI
 end
 
@@ -200,10 +200,10 @@ begin
 	# Plotting
 	it, xcam, ycam = sim_details
 	t_val = round(it*(t_max)/(nt-1), digits=2)
-	plot(x, x, p_sols[Int(floor(it)),:,:], st=:surface, zshowaxis=false, clims=(1e-1*minimum(p_sols), 1e-1*maximum(p_sols)), zlims=(1*minimum(p_sols), 1*maximum(p_sols)), legend = :none, camera=(xcam, ycam), size=(1200,800))
+	plot(x, x, 2*p_sols[Int(floor(it)),:,:], st=:surface, zshowaxis=false, clims=(1e-1*minimum(p_sols), 1e-1*maximum(p_sols)), zlims=(1*minimum(p_sols), 1*maximum(p_sols)), legend = :none, camera=(xcam, ycam), size=(1920,1080), c = :seismic)
 	xlabel!("x(meters)")
 	ylabel!("z(meters)")
-	title!("Wave at t=$(t_val) secs")
+	# title!("Wave at t=$(t_val) secs")
 	# title!("Wave Simulation", titlefontsize=68)
 end
 

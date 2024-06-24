@@ -18,6 +18,7 @@ The repository is setup as a package with source code in the folder named `src`.
 - Open Julia in the terminal and make sure that the working directory is `WaveSim` folder.
 - Move to the Pkg manager by pressing `]` key.
 - Execute `dev .` command. This should add `WaveSim` to the global environment.
+- Execute `instantiate` command.
 - Go back to the Julia prompt and open Pluto notebooks.
 
 
